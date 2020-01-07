@@ -7,7 +7,6 @@ def bfs(orbits, root):
 	visited = {}
 	visited[root] = 0
 	paths = {}
-	paths[root] = 0
 	total = 0
 	while not q.empty():
 		v = q.get()
@@ -23,13 +22,13 @@ def dist(node1, node2, paths):
 	curr = node1
 	n1steps = 0
 	n2steps = 0
-	while paths[curr] != 0:
+	while paths[curr] != "COM":
 		n1steps+=1
 		tmp = node2
 		curr = paths[curr]
 		found = False
 		n2steps = 0
-		while paths[tmp] != 0:
+		while paths[tmp] != "COM":
 			n2steps += 1
 			if curr == paths[tmp]:
 				found = True
