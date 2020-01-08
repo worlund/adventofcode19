@@ -13,11 +13,6 @@ def mode_val(intcode, instruction, v, p):
 	else:
 		return intcode[v] 
 
-def mode_mult(intcode, v1, v2):
-	result = 1
-
-	return result
-
 def run_program(intcode, start_pos, inputs):
 	i = start_pos
 	output = 0
