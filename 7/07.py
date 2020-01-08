@@ -1,14 +1,19 @@
 import sys
 from itertools import permutations
 
-def immidiate_mode(instruction, param):
+def mode(instruction, param):
 	mode = 0
-	if (instruction%(100*pow(10, param)))//(10*pow(10,param)) == 1:
-		mode = 1
+	instr = instruction
+	instr = str(instr)[::-1][2:]+"0"*param
+	if param < len(instr):
+		mode = int(instr[param-1])
+
+	#if (instruction%(100*pow(10, param)))//(10*pow(10,param)) == 1:
+	#	mode = 1
 	return mode
 
 def mode_val(intcode, instruction, v, p):
-	if immidiate_mode(instruction, p):
+	if mode(instruction, p) == 1:
 		return v
 	else:
 		return intcode[v] 
@@ -107,7 +112,7 @@ def test_amplifiers(intcode):
 			largest_output = E[4]
 			res = config
 
-	print("max signal settings:",largest_output, res)
+	print("part1 max settings:",largest_output, res)
 
 def run_feedbackloop(intcode):
 	settings = list(permutations(range(5, 10)))
@@ -134,23 +139,23 @@ def run_feedbackloop(intcode):
 					code = amp[1]
 					pc = amp[2]
 					amp_inputs = inputs[amp_id]
-					print("RUNNING AMP: ", amp_id, " Settings: ", inputs[amp_id], amp_states[amp_id][0])
+					#print("RUNNING AMP: ", amp_id, " Settings: ", inputs[amp_id], amp_states[amp_id][0])
 					state = run_program(code, pc, inputs[amp_id])
-					print("RESULTS = ", state[0], state[2], state[3])
+					#print("RESULTS = ", state[0], state[2], state[3])
 					amp_states[amp_id] = state
 					#print("STATE\n", state)
 					inputs[amp_id] = state[3]
 					if state[0] == "HALT":
 						active[amp_id] = 0
 					elif state[0] == "OUTPUT": #add output to next amps input
-						print("adding output:", state[4], " from amp:" ,amp_id, " to", (amp_id+1)%5)
+						#print("adding output:", state[4], " from amp:" ,amp_id, " to", (amp_id+1)%5)
 						inputs[(amp_id+1)%5].append(state[4])
 						if amp_id == len(amp_states)-1:
 							if state[4] > max_output:
 								max_output = state[4]
 				amp_id+=1
 
-		print("max output: ", max_output)
+	print("part2 max output: ", max_output)
 
 	 	
 intcode = list(map(int, "".join(sys.stdin.readlines()).strip().split(",")))
